@@ -23,10 +23,35 @@
 </div>
 <div class="nav">
     <ul>
-        <li class="news nav-item"><a href="/toSql" >以sql为原料生成</a></li>
-        <li class="nav-item"><a href="/toMethod">以method为原料生成</a></li>
-        <li class="nav-item"><a href="/toStandard">以模块名生成标准模板</a></li>
-        <li class="nav-item"><a href="/toBean">以bean字段为原料生成</a></li>
-        <li class="nav-item"><a href="/toInterfaceFormat">以interface为原料生成</a></li>
+        <li class="nav-item">前
+            <ul class="inner">
+                <li>
+                    <a href="/toSql" >以sql为原料生成</a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">中
+            <ul class="inner">
+                <li>
+                    <a href="/toStandard">以模块名生成标准模板</a>
+                </li>
+                <li>
+                    <a href="/toMethod">以method为原料生成</a>
+                </li>
+            </ul>
+            </li>
+        <li class="nav-item">后
+            <ul class="inner">
+                <li>
+                    <a href="/toInterfaceFormat">以interface为原料生成</a>
+                </li>
+                <li>
+                    <a href="/toBean">以bean字段为原料生成</a>
+                </li>
+                <li>
+                    <a href="/toFileFormat">以文件为原料生成</a>
+                </li>
+            </ul>
+        </li>
     </ul>
 </div>

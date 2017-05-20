@@ -13,7 +13,7 @@ import java.util.Vector;
 public class ReadDir {
 
 
-    public List<String> getFileNameList(String dirName) throws Exception{
+    public List<String> queryFileNameList(String dirName) throws Exception{
         String dir_name=dirName;  //文件夹地址
         Vector<String> ver=new Vector<String>();  //用做堆栈
         List<String> res = new ArrayList<>();
@@ -37,7 +37,7 @@ public class ReadDir {
         ReadDir readDir = new ReadDir();
         String dir = "D:\\Developer\\WorkSpace\\IntelliJIDEA\\settlementcenter2\\com.xinfengtech.member.schema\\src\\main\\java\\com\\xinfengtech\\member\\schema\\member";
         try {
-            res = readDir.getFileNameList(dir);
+            res = readDir.queryFileNameList(dir);
         } catch (Exception e) {
             e.printStackTrace();
         }
