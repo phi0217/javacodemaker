@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="javautils:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="javautils.war">
+      <element id="artifact" artifact-name="javautils:war exploded" />
+    </root>
+  </artifact>
+</component>

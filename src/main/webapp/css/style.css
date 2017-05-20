@@ -1,0 +1,331 @@
+/*全局css样式初始化设置*/
+body,
+div,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+img,
+i,
+ul,
+li,
+ol,
+dl,
+dt,
+dd,
+input,
+button {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+img {
+  display: block;
+  line-height: 0;
+}
+a {
+  text-decoration: none;
+}
+li {
+  list-style: none;
+}
+input {
+  border: 0;
+  outline: medium;
+}
+html {
+  color: #333;
+}
+.panel {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ededed;
+}
+.panel-head {
+  border-radius: 8px 8px 0 0;
+  padding: 6px 10px;
+  background: #ededed;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.panel-foot {
+  border-radius: 0 0 8px 8px;
+  padding: 10px;
+}
+.panel-body {
+  padding: 20px 10px;
+  background: #fff;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table tr th {
+  text-align: left;
+}
+table tr {
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+table tr td,
+table tr th {
+  padding: 0 10px;
+  line-height: 40px;
+}
+table tr td:last-child,
+table tr th:last-child{
+	width: 210px;
+}
+form {
+  width: 100%;
+}
+input[type="text"],
+input[type="password"],
+input[type="number"],
+input[type="email"],
+input[type="search"],select {
+  width: 100%;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  padding: 6px 12px;
+  line-height: 24px;
+  color: #333;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  writing-mode: horizontal-tb;
+  text-rendering: auto;
+  -webkit-transition: box-shadow 0.2s;
+          transition: box-shadow 0.2s;
+  margin: 5px 0;
+}
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="search"]:focus ,
+select:focus{
+  border-color: #66afe9;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 6px rgba(102, 175, 233, 0.75);
+}
+.input-group {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.input-group label {
+  padding-right: 15px;
+  text-align: right;
+}
+.modal {
+  position: absolute;
+  top: 50px;
+  z-index: 999;
+  display: none;
+}
+.modal-body {
+  background: #fff;
+  border-radius: 8px;
+}
+.modal .modal-body p{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.modal p span{
+	white-space: nowrap;
+	display: block;
+	width: 100px;
+	text-align: right;
+}
+.modal .modal-body p input{
+	flex: 1;
+}
+.mask {
+  background: rgba(0, 0, 0, 0.38);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+  display: none;
+}
+/*---------------------------按钮----------------------------------*/
+.btn {
+  display: inline-block;
+  width: auto;
+  height: 30px;
+  border-radius: 3px;
+  text-align: center;
+  padding: 5px 16px;
+  background: #fff;
+  color: #333;
+  line-height: 20px;
+  cursor: pointer;
+  border: 0;
+  outline: medium;
+   font-family: simsun;
+}
+.btn-small {
+  height: 26px;
+  line-height: 18px;
+  font-size: 14px;
+  padding: 4px 12px;
+}
+.btn-large {
+  height: 40px;
+  line-height: 24px;
+  font-size: 20px;
+  padding: 8px 16px;
+  letter-spacing: 3px;
+}
+/*----------------------------------背景色------------------------------------*/
+.blue {
+  background: #80b2c9;
+  color: #fff;
+}
+.darkblue {
+  background: #2eaebb;
+  color: #fff;
+}
+.denger {
+  background: #dd524d;
+  color: #fff;
+}
+.delete {
+  background: #ee643f;
+  color: #fff;
+}
+.success {
+  background: #4cd964;
+  color: #fff;
+}
+.warning {
+  background: #f0ad4e;
+  color: #fff;
+}
+.purple {
+  background: #8a6de9;
+  color: #fff;
+}
+.pink {
+  background: lightpink;
+  color: #fff;
+}
+.lightblue {
+  background: lightblue;
+  color: #fff;
+}
+.lightgray {
+  background: lightgray;
+  color: #fff;
+}
+.deepgray{
+	background: #959595;
+	 color: #fff;
+}
+.lightcyan {
+  background: lightcyan;
+  color: #333;
+}
+.gray {
+  background: #ededed;
+  color: #fff;
+}
+.lightyellow {
+  background: lightgoldenrodyellow;
+  color: #fff;
+}
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+.container-fluid {
+  width: 100%;
+}
+.row {
+  width: 100%;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+  float: left;
+}
+.col-12 {
+  width: 100%;
+}
+.col-11 {
+  width: 91.66666667%;
+}
+.col-10 {
+  width: 83.33333333%;
+}
+.col-9 {
+  width: 75%;
+}
+.col-8 {
+  width: 66.66666667%;
+}
+.col-7 {
+  width: 58.33333333%;
+}
+.col-6 {
+  width: 50%;
+}
+.col-5 {
+  width: 41.66666667%;
+}
+.col-4 {
+  width: 33.33333333%;
+}
+.col-3 {
+  width: 25%;
+}
+.col-2 {
+  width: 16.66666667%;
+}
+.col-1 {
+  width: 8.33333333%;
+}
+.add{
+	margin-right: 20px;
+}

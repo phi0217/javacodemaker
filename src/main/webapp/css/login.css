@@ -1,0 +1,52 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+.main {
+  height: 100%;
+  background: url(../img/login_bg.jpg) no-repeat center;
+  background-size: cover;
+}
+.main .login {
+  width: 450px;
+  margin: 0 auto;
+  z-index: 999;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  margin-left: -225px;
+}
+.main .login h3 {
+  font: 18px/30px "微软雅黑";
+  color: #333;
+}
+.main .login p {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.main .login p span {
+  display: block;
+  width: 100px;
+  text-align: right;
+  padding: 0 5px;
+  font-family: "微软雅黑";
+}
+.main .login .btn {
+  float: right;
+  margin-right: 30px;
+}
+.main .login .panel-foot {
+  overflow: hidden;
+}
+.mask {
+  background: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: block;
+}
