@@ -25,12 +25,36 @@ public class BeanFormat {
                 res.add(l);
             }
         }
-
        return res;
     }
 
+    public static List<List<String>> toList2(String resp){
+        String[] list = resp.trim().split("/[*][*]");
+        List<List<String>> res = new ArrayList<>();
+        for (String s : list) {
+            if (s.contains(";")){
+                List<String> l = new ArrayList<>();
+                String text = s.split("[*]")[1].trim();
+                String type = s.split("private ")[1].split(" ")[0].trim();
+                String name = s.split(type)[1].split(";")[0].trim();
+                String uppercase = name.substring(0,1).toUpperCase() + name.substring(1);
+                l.add(type);
+                l.add(name);
+                l.add(uppercase);
+                l.add(text);
+                res.add(l);
+            }
+        }
+        return res;
+    }
+
     public static String beanFormat(String format, String srcText){
-        List<List<String>> src = toList(srcText);
+        List<List<String>> src;
+        if (srcText.contains("/**")){
+            src = toList2(srcText);
+        }else{
+            src = toList(srcText);
+        }
         String res = "";
         for (List<String> l : src){
             String string = format.replaceAll("#type#", l.get(0))
@@ -43,5 +67,38 @@ public class BeanFormat {
             res = res + string + "\n";
         }
         return res;
+    }
+
+    public static void main(String[] args) {
+        String src = " /**\n" +
+                "     * 操作序列号\n" +
+                "     */\n" +
+                "    private String opSequenceNo;\n" +
+                "    /**\n" +
+                "     * 参数编号\n" +
+                "     */\n" +
+                "    private String parameterId;\n" +
+                "    /**\n" +
+                "     * 外部账户帐号\n" +
+                "     */\n" +
+                "    private String account;\n" +
+                "    /**\n" +
+                "     * 代理查询人持有人账号\n" +
+                "     */\n" +
+                "    private String holderAccount;\n" +
+                "    /**\n" +
+                "     * 持有人账号简称\n" +
+                "     */\n" +
+                "    private String holderShortName;\n" +
+                "    /**\n" +
+                "     * 操作类型\n" +
+                "     */\n" +
+                "    private Integer operType;\n" +
+                "    /**\n" +
+                "     * 操作执行状态\n" +
+                "     */\n" +
+                "    private Integer operExecuteStatus;";
+        List<List<String>> res = toList2(src);
+        System.out.println();
     }
 }

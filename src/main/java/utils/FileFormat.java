@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import static utils.CommonUtils.capitalize;
+import static utils.ExcelMaker.makeExcel;
 
 /**
  * Created by Phi on 2017/5/20.
@@ -116,10 +117,10 @@ public class FileFormat {
                         prefix = "[0";
                     }
                     paramDto.setAttribute(prefix + "…" + suffix);
-                    if (s1.contains("[*]")){
+                    if (s1.contains("*")){
                         paramDto.setRemark(s1.split("[*]")[1].split("\n")[0]);
                     }
-                    res.add(paramDto);
+                     res.add(paramDto);
                 }
             }
         }
@@ -132,6 +133,9 @@ public class FileFormat {
         String interfaceJar = "com.xinfengtech.fund.interfaces";
         String paramJar = "com.xinfengtech.control.schema";
         List<ExcelDto> res = queryExcelList(interfacePath,paramPath,interfaceJar,paramJar);
+        String path = "d:\\workbook.xls";
+        makeExcel(res,path);
+
         System.out.println();
     }
 }

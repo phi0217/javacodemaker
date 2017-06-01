@@ -7,7 +7,20 @@ import java.util.List;
  */
 public class test {
     public static void main(String[] args) {
-        List<String> l = new ArrayList<>();
-//        String
+//        deleteAllFilesOfDir();
+        System.out.println();
+    }
+    public static void deleteAllFilesOfDir(File path) {
+        if (!path.exists())
+            return;
+        if (path.isFile()) {
+            path.delete();
+            return;
+        }
+        File[] files = path.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            deleteAllFilesOfDir(files[i]);
+        }
+        path.delete();
     }
 }

@@ -30,7 +30,8 @@ public class MkdirsAndFile {
         file3.mkdirs();
     }
     public static void mkdirsForMethod(String basePath,String coreName){
-        coreName = coreName.substring(0,1).toLowerCase() + coreName.substring(1);
+//        coreName = coreName.substring(0,1).toLowerCase() + coreName.substring(1);
+        coreName = coreName.toLowerCase();//包名全换成小写
         File file1 = new File(basePath + CommonConstants.THE_BASE_PATH + CommonConstants.MANAGER_PATH + "/" + coreName + "/impl");
         file1.mkdirs();
         File file2 = new File(basePath + CommonConstants.THE_BASE_PATH + CommonConstants.SERVICE_PATH + "/" + coreName);
