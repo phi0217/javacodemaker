@@ -7,63 +7,85 @@ import java.util.List;
  * Created by Phi on 2017/4/19.
  */
 public class BeanFormat {
-    public static List<List<String>> toList(String resp){
+    public static List<List<String>> toList(String resp) {
         String[] list = resp.trim().split("\n");
         List<List<String>> res = new ArrayList<>();
         for (String s : list) {
-            if(s.indexOf(";")!=-1){
+            if (s.indexOf(";") != -1) {
                 List<String> l = new ArrayList<>();
                 String[] detail = s.trim().split(" ");
                 String tmp = detail[2].trim();
                 String name = tmp.split(";")[0];
                 l.add(detail[1]);//type
                 l.add(name);//name
-                l.add(name.substring(0,1).toUpperCase() + name.substring(1));//首字母大写的name
-                if(tmp.indexOf("//")!=-1){
+                l.add(name.substring(0, 1).toUpperCase() + name.substring(1));//首字母大写的name
+                if (tmp.indexOf("//") != -1) {
                     l.add(tmp.split("//")[1].trim());//注释
                 }
-                res.add(l);
-            }
-        }
-       return res;
-    }
-
-    public static List<List<String>> toList2(String resp){
-        String[] list = resp.trim().split("/[*][*]");
-        List<List<String>> res = new ArrayList<>();
-        for (String s : list) {
-            if (s.contains(";")){
-                List<String> l = new ArrayList<>();
-                String text = s.split("[*]")[1].trim();
-                String type = s.split("private ")[1].split(" ")[0].trim();
-                String name = s.split(type)[1].split(";")[0].trim();
-                String uppercase = name.substring(0,1).toUpperCase() + name.substring(1);
-                l.add(type);
-                l.add(name);
-                l.add(uppercase);
-                l.add(text);
                 res.add(l);
             }
         }
         return res;
     }
 
-    public static String beanFormat(String format, String srcText){
+    public static List<List<String>> toList2(String resp) {
+        String[] list = resp.trim().split("/[*][*]");
+        List<List<String>> res = new ArrayList<>();
+        for (String s : list) {
+            if (s.contains(";")) {
+                if (countStr(s, ";") > 1) {
+                    if (s.contains("/**")) {
+                        String first = s.split(";")[0];
+                        String other = s.substring(s.indexOf(";"));
+                        List<String> l = new ArrayList<>();
+                        String text = first.split("[*]")[1].trim();
+                        String type = first.split("private ")[1].split(" ")[0].trim();
+                        String name = first.split("private ")[1].split(" ")[1].split(";")[0].trim();
+                        String uppercase = name.substring(0, 1).toUpperCase() + name.substring(1);
+                        l.add(type);
+                        l.add(name);
+                        l.add(uppercase);
+                        l.add(text);
+                        res.add(l);
+                        List<List<String>> otherList = toList(other);
+                        res.addAll(otherList);
+                    } else {
+                        List<List<String>> otherList = toList(s);
+                        res.addAll(otherList);
+                    }
+                } else {
+                    List<String> l = new ArrayList<>();
+                    String text = s.split("[*]")[1].trim();
+                    String type = s.split("private ")[1].split(" ")[0].trim();
+                    String name = s.split("private ")[1].split(" ")[1].split(";")[0].trim();
+                    String uppercase = name.substring(0, 1).toUpperCase() + name.substring(1);
+                    l.add(type);
+                    l.add(name);
+                    l.add(uppercase);
+                    l.add(text);
+                    res.add(l);
+                }
+            }
+        }
+        return res;
+    }
+
+    public static String beanFormat(String format, String srcText) {
         List<List<String>> src;
-        if (srcText.contains("/**")){
+        if (srcText.contains("/**")) {
             src = toList2(srcText);
-        }else{
+        } else {
             src = toList(srcText);
         }
         String res = "";
-        for (List<String> l : src){
+        for (List<String> l : src) {
             String string = format.replaceAll("#type#", l.get(0))
-                    .replaceAll("#name#", l.get(1)).replaceAll("#uppercase#", l.get(2));
-                if (l.size() >= 4){
-                    string = string.replaceAll("#text#", l.get(3));
-                }else{
-                    string = string.replaceAll("#text#", "");
-                }
+                    .replaceAll("#name#", l.get(1)).replaceAll("#uppercase#", l.get(2)).replaceAll("#enter#", "\n");
+            if (l.size() >= 4) {
+                string = string.replaceAll("#text#", l.get(3));
+            } else {
+                string = string.replaceAll("#text#", "");
+            }
             res = res + string + "\n";
         }
         return res;
@@ -100,5 +122,17 @@ public class BeanFormat {
                 "    private Integer operExecuteStatus;";
         List<List<String>> res = toList2(src);
         System.out.println();
+    }
+
+    public static int countStr(String str1, String str2) {
+        int counter = 0;
+        if (str1.indexOf(str2) == -1) {
+            return 0;
+        }
+        while (str1.indexOf(str2) != -1) {
+            counter++;
+            str1 = str1.substring(str1.indexOf(str2) + str2.length());
+        }
+        return counter;
     }
 }

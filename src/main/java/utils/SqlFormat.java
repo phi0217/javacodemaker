@@ -54,30 +54,33 @@ public class SqlFormat {
         String[] list = before.replaceAll("\n","").split(",");
         List<List<String>> listList = new ArrayList<>();
         for (String l : list) {
-            List<String> li = new ArrayList<>();
-            String cl = l.trim();
-            String[] arr = cl.split("\\s+");
-            String name = arr[0];
-            String type = arr[1];
-            String[] tolist = name.split("_");
-            boolean first = true;
-            StringBuffer propertyName = new StringBuffer();
-            for (String theName : tolist) {
-                if (first){
-                    propertyName.append(theName);
-                    first = false;
-                }else {
-                    theName = theName.substring(0, 1).toUpperCase() + theName.substring(1);
-                    propertyName.append(theName);
+            if (l.contains(" ")){
+                List<String> li = new ArrayList<>();
+                String cl = l.trim();
+                String[] arr = cl.split("\\s+");
+                String name = arr[0];
+                String type = arr[1];
+                String[] tolist = name.split("_");
+                boolean first = true;
+                StringBuffer propertyName = new StringBuffer();
+                for (String theName : tolist) {
+                    if (first){
+                        propertyName.append(theName);
+                        first = false;
+                    }else {
+                        theName = theName.substring(0, 1).toUpperCase() + theName.substring(1);
+                        propertyName.append(theName);
+                    }
                 }
+                li.add(name);//0 sqlName:parameter_id
+                li.add(type);//1 sqlType:VARCHAR(20)
+                String camelName = propertyName.toString();
+                li.add(camelName);//2 camelName:parameterId
+                String normalName = camelName.substring(0, 1).toUpperCase() + camelName.substring(1);
+                li.add(normalName);//3 normalName:ParameterId
+                listList.add(li);
             }
-            li.add(name);//0 sqlName:parameter_id
-            li.add(type);//1 sqlType:VARCHAR(20)
-            String camelName = propertyName.toString();
-            li.add(camelName);//2 camelName:parameterId
-            String normalName = camelName.substring(0, 1).toUpperCase() + camelName.substring(1);
-            li.add(normalName);//3 normalName:ParameterId
-            listList.add(li);
+
         }
         return listList;
     }
@@ -209,22 +212,22 @@ public class SqlFormat {
         StringBuffer baseSql = new StringBuffer();
         baseSql.append("<sql id=\"baseSql\">\n");
         StringBuffer select = new StringBuffer();
-        select.append("<select id=\"\"  parameterType=\"?\" resultMap=\"baseResult\">\n" +
+        select.append("<select id=\"\" resultType=\"?\">\n" +
                 "\tSELECT\n" +
                 "\t<include refid=\"baseSql\" />\n" +
                 "\tfrom ?\n" +
                 "\twhere ?\n" +
-                "\tORDER by ?\n" +
+                "\tORDER by ? DESC\n" +
                 "</select>");
         StringBuffer selectCommon = new StringBuffer();
-        selectCommon.append("<select id=\"?\"  parameterType=\"?\" resultMap=\"baseResult\">\n" +
+        selectCommon.append("<select id=\"?\" resultType=\"?\">\n" +
                 "\tSELECT\n" +
                 "\t<include refid=\"baseSql\" />\n" +
                 "\tfrom ?\n" +
                 "\twhere\n" +
                 "\t<trim prefixOverrides=\"AND\">\n");
         StringBuffer insertBefore = new StringBuffer();
-        insertBefore.append("<insert id=\"\" parameterType=\"?\">\n" +
+        insertBefore.append("<insert id=\"\" >\n" +
                 "\tINSERT\n" +
                 "\tINTO ?\n" +
                 "\t(");
@@ -232,7 +235,7 @@ public class SqlFormat {
         insertAfter.append("\tVALUES\n" +
                 "\t(");
         StringBuffer insertCommonBefore = new StringBuffer();
-        insertCommonBefore.append("<insert id=\"?\" parameterType=\"?\">\n" +
+        insertCommonBefore.append("<insert id=\"?\">\n" +
                 "\tINSERT\n" +
                 "\tINTO ?\n" +
                 "\t(\n\t<trim suffixOverrides=\",\">\n");
@@ -246,8 +249,7 @@ public class SqlFormat {
         StringBuffer updateCommon = new StringBuffer();
         updateCommon.append("<update id=\"\">\n" +
                 "\tUPDATE ?\n" +
-                "\t<set>\n" +
-                "\t\t<trim suffixOverrides=\",\">\n");
+                "\t<set>\n");
         StringBuffer delete = new StringBuffer();
         delete.append("<delete id=\"\">\n" +
                 "\tdelete from ? where ?\n" +
@@ -264,7 +266,7 @@ public class SqlFormat {
                 insertCommonAfter.append("\t\t<if test=\"").append(listList.get(i).get(2)).append(" != null\">")
                         .append("#{").append(listList.get(i).get(2)).append("},</if>\n");
                 update.append("\t").append(listList.get(i).get(0)).append("=#{").append(listList.get(i).get(2)).append("},\n");
-                updateCommon.append("\t\t\t<if test=\"").append(listList.get(i).get(2)).append(" != null\">")
+                updateCommon.append("\t\t<if test=\"").append(listList.get(i).get(2)).append(" != null\">")
                         .append(listList.get(i).get(0)).append("=#{").append(listList.get(i).get(2)).append("},</if>\n");
             }else {
                 baseSql.append("\t").append(listList.get(i).get(0)).append("\n</sql>");
@@ -280,13 +282,10 @@ public class SqlFormat {
                         "</insert>");
                 update.append("\t").append(listList.get(i).get(0)).append("=#{").append(listList.get(i).get(2)).append("}\n\tWHERE ?\n" +
                         "</update>");
-                updateCommon.append("\t\t\t<if test=\"").append(listList.get(i).get(2)).append(" != null\">")
+                updateCommon.append("\t\t<if test=\"").append(listList.get(i).get(2)).append(" != null\">")
                         .append(listList.get(i).get(0)).append("=#{").append(listList.get(i).get(2)).append("}</if>\n" +
-                        "\t\t</trim>\n" +
                         "\t</set>\n" +
-                        "\t<where>\n" +
-                        "\t\t?\n" +
-                        "\t</where>\n</update>");
+                        "\tWHERE ?\n</update>");
             }
         }
         StringBuffer insert = new StringBuffer();

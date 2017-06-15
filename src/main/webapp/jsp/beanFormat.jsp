@@ -27,7 +27,7 @@
             <form action="/bean" method="post">
                 <div class="panel-body">
                     <p><span>源格式</span><input class="title" type="text" required="required" style="background: #efefef"
-                                               value="private String subjectCode;//会计科目名称    #type# 类型 #name# 字段名 #uppercase# 首字母大写的字段名 #text# 注释" readonly="readonly"/></p>
+                                               value="private String subjectCode;//会计科目名称    #type# 类型 #name# 字段名 #uppercase# 首字母大写的字段名 #text# 注释 #enter# 回车" readonly="readonly"/></p>
                     <p><span>目标格式</span><input name="targetFormat" class="title" type="text" required="required"
                                                       placeholder="如：#type# #name#，"/></p>
                     <p><span>源语句</span><textarea class="text" name="srcTest" required="required" placeholder="如：private String subjectCode;//会计科目名称    回车分隔 注释可以没有">${srcTest}</textarea></p>
