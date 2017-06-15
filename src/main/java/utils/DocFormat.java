@@ -16,7 +16,7 @@ import static utils.ExcelMaker.makeExcel;
 /**
  * Created by Phi on 2017/5/20.
  */
-public class FileFormat {
+public class DocFormat {
     public static List<ExcelDto> queryExcelList(String interfacePath, String paramPath, String interfaceJar, String paramJar) throws UtilsException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Date today = new Date();
@@ -127,9 +127,14 @@ public class FileFormat {
         return res;
     }
 
+    public static void docmaker(String interfacePath, String paramPath, String interfaceJar, String paramJar, String path){
+        List<ExcelDto> excelDtos = queryExcelList(interfacePath,paramPath,interfaceJar,paramJar);
+        makeExcel(excelDtos,path + "workbook.xls");
+    }
+
     public static void main(String[] args) {
-        String interfacePath = "D:\\Developer\\WorkSpace\\IntelliJIDEA\\settlementcenter2\\com.xinfengtech.fund.interfaces\\src\\main\\java\\com\\xinfengtech\\fund\\interfaces\\service\\inneraccount\\InnerAccountService.java";
-        String paramPath = "D:\\Developer\\WorkSpace\\IntelliJIDEA\\settlementcenter2\\com.xinfengtech.fund.schema\\src\\main\\java\\com\\xinfengtech\\fund\\schema\\inneraccount";
+        String interfacePath = "D:\\Developer\\WorkSpace\\IntelliJIDEA\\settlementcenter2\\com.xinfengtech.fund.interfaces\\src\\main\\java\\com\\xinfengtech\\fund\\interfaces\\service\\externalaccount\\ExternalAccountService.java";
+        String paramPath = "D:\\Developer\\WorkSpace\\IntelliJIDEA\\settlementcenter2\\com.xinfengtech.fund.schema\\src\\main\\java\\com\\xinfengtech\\fund\\schema\\externalaccount";
         String interfaceJar = "com.xinfengtech.fund.interfaces";
         String paramJar = "com.xinfengtech.control.schema";
         List<ExcelDto> res = queryExcelList(interfacePath,paramPath,interfaceJar,paramJar);

@@ -12,7 +12,6 @@ import utils.BeanFormat;
 public class BeanFormatUtilsController {
     @RequestMapping(value = "/toBean")
     public String toBean(){
-        System.out.println();
         return "beanFormat";
     }
 

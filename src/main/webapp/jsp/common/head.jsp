@@ -38,6 +38,9 @@
                 <li>
                     <a href="/toMethod">以method为原料生成</a>
                 </li>
+                <li>
+                    <a href="/toDoc">接口文档生成</a>
+                </li>
             </ul>
             </li>
         <li class="nav-item">后

@@ -31,6 +31,14 @@
                     <p><span>目标格式</span><input name="targetFormat" class="title" type="text" required="required"
                                                       placeholder="如：#type# #name#，"/></p>
                     <p><span>源语句</span><textarea class="text" name="srcTest" required="required" placeholder="如：private String subjectCode;//会计科目名称    回车分隔 注释可以没有">${srcTest}</textarea></p>
+                    <p><span>set模板</span><input class="title" type="text" required="required" style="background: #efefef"
+                                              value="req.set#uppercase#();  测试用    req.set#uppercase#(#name#);  control用" readonly="readonly"/></p>
+                    <p><span>字段添加注解模板</span><input class="title" type="text" required="required" style="background: #efefef"
+                                              value="     /**#enter#     * #text##enter#     */#enter#@ParamElement(required=true)#enter#private #type# #name#;" readonly="readonly"/></p>
+                    <p><span>control入参模板</span><input class="title" type="text" required="required" style="background: #efefef"
+                                              value="#type#  #name#," readonly="readonly"/></p>
+                    <p><span>表头模板</span><input class="title" type="text" required="required" style="background: #efefef"
+                                              value="<th>#text#</th>" readonly="readonly"/></p>
                 </div>
                 <div class="panel-foot lightgray">
                     <button type="submit" class="btn blue">生成</button>
