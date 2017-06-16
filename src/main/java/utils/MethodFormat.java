@@ -116,7 +116,8 @@ public class MethodFormat {
         text.append("public interface " + coreName + "Service {\n");
         for (String s : list) {
             String lower = s.substring(0,1).toLowerCase() + s.substring(1);
-            text.append("\t").append(s).append("Response ").append(lower).append("(").append(s).append("Request req);\n");
+            text.append("@FunctionInfo(functionNo=\"?\", description=\"?\", version=\"1.0.0.0\")\n");
+            text.append("\t").append(s).append("Response ").append(lower).append("(").append(s).append("Request req);\n\n");
         }
         text.append("}");
         return text.toString();
@@ -136,19 +137,35 @@ public class MethodFormat {
             text.append("    @Override\n" +
                     "    public ").append(s).append("Response ").append(lower).append("(").append(s).append("Request req) {\n" +
                     "        ").append(s).append("Response resp = new ").append(s).append("Response();\n" +
+                    "\tString description = \"?功能名?\";\n"+
                     "        try {\n" +
+                            "\t\t\tlogger.info(\n" +
+                            "\t\t\t\t\t\"请求编号：【\"+req.getRequestNo()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"操作员：【\"+req.getOperCode()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"【BEGIN】\"+description+\"...\"\n" +
+                            "\t\t\t\t\t+ \"?主键?：【?】\"\n" +
+                            "\t\t\t\t\t);"+
                     "            try {\n" +
                     "                resp= ").append(lowerCoreName).append("Manager.").append(lower).append("(req);\n" +
+                    "\t\t\tlogger.info(\n" +
+                    "\t\t\t\t\t\"【END-SUCCESS】\"+description+\"...\"\n" +
+                    "\t\t\t\t\t+\"?主键?：【?】\"\n" +
+                    "\t\t\t\t\t);" +
                     "            }catch (ClearingException e){\n" +
-                    "                logger.error(e.toString());\n" +
+                    "                logger.error(\"【END-ERROR】\"+description+\"...errorCode=\" + e.getErrorCode(), e);\n" +
                     "                resp.setResultCode(e.getErrorCode());\n" +
                     "                resp.setResultMessage(e.getErrorMessage());\n" +
                     "            }\n" +
                     "        }catch (Exception e){\n" +
-                    "            logger.error(e.toString());\n" +
+                    "            logger.error(\"【END-ERROR】\"+description+\"...\", e);\n" +
                     "            resp.setResultCode(ExceptionConstants.SYS_ERR);\n" +
                     "            resp.setResultMessage(e.getMessage().toString());\n" +
-                    "        }\n" +
+                    "        }\n finally {\n" +
+                    "\t\t\tlogger.info(\n" +
+                    "\t\t\t\t\t\"请求编号：【\"+req.getRequestNo()+\"】\"\n" +
+                    "\t\t\t\t\t+ \"【END】\"+description+\"...\"\n" +
+                    "\t\t\t\t\t);\n" +
+                    "\t\t}" +
                     "        return resp;\n" +
                     "    }\n");
         }

@@ -12,10 +12,12 @@ public class InterfaceFormat {
         String[] list = method.split("\n");
         List<String> resList = new ArrayList<>();
         for (String s : list) {
-            s = s.trim();
-            if (s.length()>0){
-                s = s.split(" ")[1].split("\\(")[0];
-                resList.add(s);
+            if (s.contains(";")){
+                s = s.trim();
+                if (s.length()>0){
+                    s = s.split(" ")[1].split("\\(")[0];
+                    resList.add(s);
+                }
             }
         }
         return resList;
