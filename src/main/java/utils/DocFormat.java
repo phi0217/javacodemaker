@@ -36,8 +36,10 @@ public class DocFormat {
         } catch (Exception e) {
             throw new UtilsException(e.toString());
         }
-        String[] interfaceList = interfaceStr.split("@FunctionInfo");
-        String tmp = "";
+        while (interfaceStr.contains("/**")) {
+            interfaceStr = interfaceStr.split("/[*][*]")[0]+interfaceStr.split("[*]/")[1];
+        }
+            String[] interfaceList = interfaceStr.split("@FunctionInfo");
         String interfaceTmp = "";
 
         for (String s : interfaceList) {
@@ -84,7 +86,7 @@ public class DocFormat {
         for (String s : paramPathList) {
             if (s.contains(paramName)) {
                 String file = readFile.readFile(s);
-                boolean a = (!file.contains(" class ")) || (!file.contains("/[*][*]")) || (!file.contains("private")) || (!file.contains(";"));
+                boolean a = (!file.contains(" class ")) || (!file.contains("/**")) || (!file.contains("private")) || (!file.contains(";"));
                 String[] paramList = file.split(" class ")[1].split("/[*][*]");
                 for (String s1 : paramList) {
                     n++;

@@ -96,12 +96,13 @@ body {
 }
 .nav .nav-item li {
   font-family: "宋体";
+  border-bottom: 1px solid #ccc;
 }
 .nav .nav-item .inner li a {
   color: #fff;
 }
-.nav .nav-item .inner li:nth-of-type(1) {
-  border-bottom: 1px solid #ccc;
+.nav .nav-item .inner li:last-of-type{
+  border-bottom: 0;
 }
 .main {
   width: 1200px;
