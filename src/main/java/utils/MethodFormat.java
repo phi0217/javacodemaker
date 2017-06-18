@@ -159,7 +159,7 @@ public class MethodFormat {
                     "        }catch (Exception e){\n" +
                     "            logger.error(\"【END-ERROR】\"+description+\"...\", e);\n" +
                     "            resp.setResultCode(ExceptionConstants.SYS_ERR);\n" +
-                    "            resp.setResultMessage(e.getMessage().toString());\n" +
+                    "            resp.setResultMessage(e.getMessage());\n" +
                     "        }\n finally {\n" +
                     "\t\t\tlogger.info(\n" +
                     "\t\t\t\t\t\"请求编号：【\"+req.getRequestNo()+\"】\"\n" +

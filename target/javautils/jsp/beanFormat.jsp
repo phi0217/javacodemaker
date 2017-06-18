@@ -35,8 +35,10 @@
                                               value="req.set#uppercase#();  测试用    req.set#uppercase#(#name#);  control用" readonly="readonly"/></p>
                     <p><span>字段添加注解模板</span><input class="title" type="text" required="required" style="background: #efefef"
                                               value="     /**#enter#     * #text##enter#     */#enter#@ParamElement(required=true)#enter#private #type# #name#;" readonly="readonly"/></p>
-                    <p><span>control入参模板</span><input class="title" type="text" required="required" style="background: #efefef"
+                    <p><span>control入参模板1</span><input class="title" type="text" required="required" style="background: #efefef"
                                               value="#type#  #name#," readonly="readonly"/></p>
+                    <p><span>control入参模板2</span><input class="title" type="text" required="required" style="background: #efefef"
+                                              value="@RequestParam(value = &#34;#name#&#34;, required = false) #type# #name#," readonly="readonly"/></p>
                     <p><span>表头模板</span><input class="title" type="text" required="required" style="background: #efefef"
                                               value="<th>#text#</th>" readonly="readonly"/></p>
                 </div>

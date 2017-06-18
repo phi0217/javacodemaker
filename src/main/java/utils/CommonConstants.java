@@ -25,6 +25,15 @@ public class CommonConstants {
     public static String REQ_PATH = "/req";
 
     public static String RESP_PATH = "/resp";
+    /**
+     * 注释风格：行内
+     */
+    public static int ANNOTATION_IN_LINE = 1;
+    /**
+     * 注释风格：行外
+     */
+    public static int ANNOTATION_OUT_LINE = 2;
+
 
 
 }
