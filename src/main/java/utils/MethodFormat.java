@@ -2,6 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Phi on 2017/4/18.
@@ -169,6 +170,99 @@ public class MethodFormat {
                     "        return resp;\n" +
                     "    }\n");
         }
+        text.append("}");
+        return text.toString();
+    }
+
+    /*按照方法List生成ServiceImpl*/
+    public static String toCommonServiceImplHaveNameList(String coreName, List<String> list, Map<String, String> nameMap){
+        StringBuffer text = new StringBuffer();
+        String lowerCoreName = coreName.substring(0,1).toLowerCase() + coreName.substring(1);
+        text.append("@Service(\""+ coreName +"Service\")\n" +
+                "public class "+ coreName +"ServiceImpl implements "+ coreName +"Service {\n" +
+                "    private final Logger logger = LoggerFactory.getLogger(this.getClass()); \n" +
+                "    @Autowired\n" +
+                "    ").append(coreName).append("Manager ").append(lowerCoreName).append("Manager;\n");
+            for (String s : list) {
+                String lower = s.substring(0,1).toLowerCase() + s.substring(1);
+                if (null != nameMap.get(lower)){
+                    //包含功能名
+
+                    String description = nameMap.get(lower);
+                    text.append("    @Override\n" +
+                            "    public ").append(s).append("Response ").append(lower).append("(").append(s).append("Request req) {\n" +
+                            "        ").append(s).append("Response resp = new ").append(s).append("Response();\n" +
+                            "\tString description = \"").append(description).append("\";\n"+
+                            "        try {\n" +
+                            "\t\t\tlogger.info(\n" +
+                            "\t\t\t\t\t\"请求编号：【\"+req.getRequestNo()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"操作员：【\"+req.getOperCode()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"【BEGIN】\"+description+\"...\"\n" +
+                            "\t\t\t\t\t+ \"?主键?：【?】\"\n" +
+                            "\t\t\t\t\t);"+
+                            "            try {\n" +
+                            "                resp= ").append(lowerCoreName).append("Manager.").append(lower).append("(req);\n" +
+                            "\t\t\tlogger.info(\n" +
+                            "\t\t\t\t\t\"【END-SUCCESS】\"+description+\"...\"\n" +
+                            "\t\t\t\t\t+\"?主键?：【?】\"\n" +
+                            "\t\t\t\t\t);" +
+                            "            }catch (ClearingException e){\n" +
+                            "                logger.error(\"【END-ERROR】\"+description+\"...errorCode=\" + e.getErrorCode(), e);\n" +
+                            "                resp.setResultCode(e.getErrorCode());\n" +
+                            "                resp.setResultMessage(e.getErrorMessage());\n" +
+                            "            }\n" +
+                            "        }catch (Exception e){\n" +
+                            "            logger.error(\"【END-ERROR】\"+description+\"...\", e);\n" +
+                            "            resp.setResultCode(ExceptionConstants.SYS_ERR);\n" +
+                            "            resp.setResultMessage(e.getMessage());\n" +
+                            "        }\n finally {\n" +
+                            "\t\t\tlogger.info(\n" +
+                            "\t\t\t\t\t\"请求编号：【\"+req.getRequestNo()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"【END】\"+description+\"...\"\n" +
+                            "\t\t\t\t\t);\n" +
+                            "\t\t}" +
+                            "        return resp;\n" +
+                            "    }\n");
+                }else{
+                    //不包含功能名
+
+                    text.append("    @Override\n" +
+                            "    public ").append(s).append("Response ").append(lower).append("(").append(s).append("Request req) {\n" +
+                            "        ").append(s).append("Response resp = new ").append(s).append("Response();\n" +
+                            "\tString description = \"?功能名?\";\n"+
+                            "        try {\n" +
+                            "\t\t\tlogger.info(\n" +
+                            "\t\t\t\t\t\"请求编号：【\"+req.getRequestNo()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"操作员：【\"+req.getOperCode()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"【BEGIN】\"+description+\"...\"\n" +
+                            "\t\t\t\t\t+ \"?主键?：【?】\"\n" +
+                            "\t\t\t\t\t);"+
+                            "            try {\n" +
+                            "                resp= ").append(lowerCoreName).append("Manager.").append(lower).append("(req);\n" +
+                            "\t\t\tlogger.info(\n" +
+                            "\t\t\t\t\t\"【END-SUCCESS】\"+description+\"...\"\n" +
+                            "\t\t\t\t\t+\"?主键?：【?】\"\n" +
+                            "\t\t\t\t\t);" +
+                            "            }catch (ClearingException e){\n" +
+                            "                logger.error(\"【END-ERROR】\"+description+\"...errorCode=\" + e.getErrorCode(), e);\n" +
+                            "                resp.setResultCode(e.getErrorCode());\n" +
+                            "                resp.setResultMessage(e.getErrorMessage());\n" +
+                            "            }\n" +
+                            "        }catch (Exception e){\n" +
+                            "            logger.error(\"【END-ERROR】\"+description+\"...\", e);\n" +
+                            "            resp.setResultCode(ExceptionConstants.SYS_ERR);\n" +
+                            "            resp.setResultMessage(e.getMessage());\n" +
+                            "        }\n finally {\n" +
+                            "\t\t\tlogger.info(\n" +
+                            "\t\t\t\t\t\"请求编号：【\"+req.getRequestNo()+\"】\"\n" +
+                            "\t\t\t\t\t+ \"【END】\"+description+\"...\"\n" +
+                            "\t\t\t\t\t);\n" +
+                            "\t\t}" +
+                            "        return resp;\n" +
+                            "    }\n");
+                }
+
+            }
         text.append("}");
         return text.toString();
     }

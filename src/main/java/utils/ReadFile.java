@@ -1,6 +1,9 @@
 package utils;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * java 读取文件到String
@@ -17,9 +20,10 @@ public class ReadFile {
      * @date 2013-1-7
      */
     public static void readToBuffer(StringBuffer buffer, String filePath) throws IOException {
-        InputStream is = new FileInputStream(filePath);
+//        InputStream is = new FileInputStream(filePath);
         String line; // 用来保存每行读取的内容
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(filePath), "UTF-8");
+        BufferedReader reader = new BufferedReader(isr);
         line = reader.readLine(); // 读取第一行
         while (line != null) { // 如果 line 为空说明读完了
             buffer.append(line); // 将读到的内容添加到 buffer 中
@@ -27,7 +31,7 @@ public class ReadFile {
             line = reader.readLine(); // 读取下一行
         }
         reader.close();
-        is.close();
+        isr.close();
     }
 
     /**

@@ -1,5 +1,6 @@
 package controller;
 
+import org.omg.PortableInterceptor.ServerRequestInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,7 +9,9 @@ import utils.CommonUtils;
 import utils.MethodFormat;
 import utils.MkdirsAndFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Phi on 2017/4/17.
@@ -27,7 +30,7 @@ public class MethodFormatUtilsController {
     }
 
     @RequestMapping(value = "/method")
-    public String method(String path, String coreName, String method, ModelMap model){
+    public String method(String path, String coreName, String method,String nameList, ModelMap model){
         if (path == null || coreName == null || method == null ){
             model.addAttribute("msg","缺少参数");
             return "methodFormat";
@@ -36,7 +39,7 @@ public class MethodFormatUtilsController {
         method = CommonUtils.textFormat(method);
         String res = "";
         try{
-            res = maker(path, coreName, method);
+            res = maker(path, coreName, method,nameList);
         }catch (Exception e){
             model.addAttribute("msg",e.toString());
             return "methodFormat";
@@ -48,6 +51,7 @@ public class MethodFormatUtilsController {
         model.addAttribute("coreName",coreName);
         model.addAttribute("method",method);
         model.addAttribute("model",model);
+        model.addAttribute("nameList",nameList);
         return "methodFormat";
     }
 
@@ -62,9 +66,9 @@ public class MethodFormatUtilsController {
         }
 
         method = CommonUtils.textFormat(method);
-
+        String nameList = null;
         try{
-            res = maker(path, coreName, method);
+            res = maker(path, coreName, method, nameList);
         }catch (Exception e){
             model.addAttribute("msg",e.toString());
             return "methodStandardFormat";
@@ -79,7 +83,7 @@ public class MethodFormatUtilsController {
     }
 
     /*生成方法*/
-    private static String maker(String path, String coreName, String method){
+    private static String maker(String path, String coreName, String method, String nameList){
         String res = "";
 
         List<String> methodList = MethodFormat.toCommonMethodList(method);
@@ -87,7 +91,20 @@ public class MethodFormatUtilsController {
         String manager = MethodFormat.toCommonManager(coreName,methodList);
         String managerImpl = MethodFormat.toCommonManagerImpl(coreName,methodList);
         String service = MethodFormat.toCommonService(coreName,methodList);
-        String serviceImpl = MethodFormat.toCommonServiceImpl(coreName,methodList);
+        String serviceImpl;
+        if (nameList == null){
+            serviceImpl = MethodFormat.toCommonServiceImpl(coreName,methodList);
+        }else{
+            Map<String,String> nameMap = new HashMap<>();
+            String[] list = nameList.split("\n");
+            for (String s : list) {
+                s = s.replaceAll("\r","");
+                String code = s.split(" ")[0];
+                String name = s.split(" ")[1];
+                nameMap.put(code,name);
+            }
+            serviceImpl = MethodFormat.toCommonServiceImplHaveNameList(coreName,methodList,nameMap);
+        }
         String controller = MethodFormat.toCommonController(methodList);
         List<List<String>> reqList = MethodFormat.toReq(methodList);
         List<List<String>> respList = MethodFormat.toResp(methodList);

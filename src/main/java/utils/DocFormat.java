@@ -54,14 +54,14 @@ public class DocFormat {
                     if (s.contains(");")) {
                         ExcelDto excelDto = new ExcelDto();
                         excelDto.setFunctionCode(s.split("functionNo")[1].split("\"")[1].split("\"")[0]);
-                        excelDto.setFunctionName(capitalize(s.split("\n")[1].trim().split(" ")[1].split("\\(")[0]));
+                        excelDto.setFunctionName(s.split("\n")[1].trim().split(" ")[1].split("\\(")[0]);
                         excelDto.setCnName(s.split("description")[1].split("\"")[1].split("\"")[0]);
                         excelDto.setBusinessDescribe(s.split("description")[1].split("\"")[1].split("\"")[0]);
                         excelDto.setVersion(s.split("version")[1].split("\"")[1].split("\"")[0]);
                         excelDto.setUpdateDate(updateString);
                         excelDto.setInterFaceJar(interfaceJar);
                         excelDto.setParamJar(paramJar);
-                        excelDto.setInterfaceFunction(packageName + "." + interfaceTmp + "." + (s.split("\n")[1].trim().split(" ")[1] + " " + s.split(" ")[2]).split(";")[0]);
+                        excelDto.setInterfaceFunction(packageName + "." + interfaceTmp + "." + (s.split("\n")[1].trim().split(" ")[1] ) + " request)");
                         excelDto.setReqName(s.split("\n")[1].trim().split("\\(")[1].split(" ")[0]);
                         excelDto.setResName(s.split("\n")[1].trim().split(" ")[0]);
                         try {
@@ -114,13 +114,74 @@ public class DocFormat {
                     }
                     paramDto.setAttribute(prefix + "…" + suffix);
                     if (s1.contains("*")) {
-                        paramDto.setRemark(s1.split("[*]")[1].split("\n")[0]);
+                        paramDto.setRemark(s1.split("[*]")[1].split("\n")[0].trim());
                     }
                     res.add(paramDto);
                 }
             }
         }
         return res;
+    }
+
+    /**
+     * 生成非空判断
+     * @param excelDtos
+     * @return
+     */
+    public static String validateNotNullUtil(List<ExcelDto> excelDtos){
+        StringBuffer validateBuffer = new StringBuffer();
+        StringBuffer constantBuffer = new StringBuffer();
+        for (ExcelDto excelDto : excelDtos) {
+            StringBuffer validateBuf = new StringBuffer();
+            validateBuf.append("    /**\n" +
+                    "     * ").append(excelDto.getCnName()).append("校验非空字段\n" +
+                    "     *\n" +
+                    "     * @param req\n" +
+                    "     */\n" +
+                    "    private void ").append("validateNotNull").append(excelDto.getFunctionName())
+                    .append("(").append(excelDto.getReqName()).append(" req) {\n" +
+                    "        ");
+            StringBuffer constantBuf = new StringBuffer();
+            constantBuf.append("//*************").append(excelDto.getFunctionName()).append("操作常量************//\n");
+
+            List<ParamDto> reqList = excelDto.getReqList();
+//            int counter = 0;
+//            int counter2 = 101;
+            for (ParamDto paramDto : reqList) {
+                if (paramDto.getAttribute().contains("[1")){
+
+//                    String counterStr = counter+"";
+//                    if (1 == counterStr.length()){
+//                        counterStr = "0" + counterStr;
+//                    }
+
+                    validateBuf.append("if (BaseBeanUtils.isNull(req.get").append(capitalize(paramDto.getName())).append("())){\n" +
+                            "            throw new ClearingException(ExceptionConstants.ERR_").append(excelDto.getFunctionName().toUpperCase())
+                    .append("_").append(paramDto.getName().toUpperCase()).append("_").append("ISNULL").append(");\n" +
+                            "        }\n" +
+                            "        ");
+                    constantBuf.append("\t/** ").append("参数").append(paramDto.getRemark()).append("不能为空").append(" */\n" +
+                            "\tpublic static final String ERR_").append(excelDto.getFunctionName().toUpperCase())
+                            .append("_").append(paramDto.getName().toUpperCase()).append("_").append("ISNULL").append(" = \"")
+                            .append("参数").append(paramDto.getRemark()).append("不能为空").append("\";\n" +
+                            "\t");
+
+                validateBuf.append("\n" +
+                        "    }");
+                validateBuffer.append("\n").append(validateBuf);
+                constantBuffer.append("\n").append(constantBuf);
+                }
+            }
+        }
+        return validateBuffer.append("\n").append(constantBuffer).toString();
+    }
+
+    public static String nameListMaker(List<ExcelDto> excelDtos){
+        StringBuffer res = new StringBuffer();
+        for (ExcelDto excelDto : excelDtos) {
+            res.append(excelDto.getFunctionName()).append(" ").append(excelDto.getCnName()).append("\n");
+        }
+        return res.toString();
     }
 
     public static void docmaker(String interfacePath, String paramPath, String interfaceJar, String paramJar, String path) {
@@ -135,6 +196,11 @@ public class DocFormat {
         String paramJar = "com.xinfengtech.control.schema";
         List<ExcelDto> res = queryExcelList(interfacePath, paramPath, interfaceJar, paramJar);
         String path = "d:\\workbook.xls";
+        String validateNotNull = validateNotNullUtil(res);
+        String nameList = nameListMaker(res);
+
+        System.out.println();
+
         makeExcel(res, path);
 
         System.out.println();

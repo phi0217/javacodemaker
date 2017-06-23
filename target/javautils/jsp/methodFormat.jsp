@@ -31,6 +31,7 @@
                     <p><span>生成路径</span><input name="path" class="title" type="text" required="required"
                                                value="${path}" placeholder="如：D:/"/></p>
                     <p><span>method语句</span><textarea class="text" name="method" required="required" placeholder="如：inputSubjectNew 回车分隔 首字母小写">${method}</textarea></p>
+                    <p><span>方法名语句（可选）</span><textarea class="text" name="nameList" placeholder="如：Inputexternalaccountnew 外部账户新增录入 回车分隔 首字母小写">${nameList}</textarea></p>
                 </div>
                 <div class="panel-foot lightgray">
                     <button type="submit" class="btn blue">生成</button>
