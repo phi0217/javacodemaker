@@ -41,6 +41,7 @@
                     <button type="submit" class="btn blue">生成</button>
                 </div>
             </form>
+            <textarea class="text" style="width: 100%;font: 14px/26px '微软雅黑';color: #333;min-height: 800px;">${res}</textarea>
         </div>
     </div>
 </div>
