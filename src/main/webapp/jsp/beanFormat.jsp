@@ -41,6 +41,8 @@
                                               value="@RequestParam(value = &#34;#name#&#34;, required = false) #type# #name#," readonly="readonly"/></p>
                     <p><span>表头模板</span><input class="title" type="text" required="required" style="background: #efefef"
                                               value="<th>#text#</th>" readonly="readonly"/></p>
+                    <p><span>搜索查询参数回写</span><input class="title" type="text" required="required" style="background: #efefef"
+                                              value="if (!BaseBeanUtils.isNull(#name#)){#enter#			dto.set#uppercase#(#name#);#enter#		}" readonly="readonly"/></p>
                 </div>
                 <div class="panel-foot lightgray">
                     <button type="submit" class="btn blue">生成</button>

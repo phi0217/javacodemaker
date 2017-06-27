@@ -51,9 +51,6 @@
                 <li>
                     <a href="/toBean">以bean字段为原料生成</a>
                 </li>
-                <li>
-                    <a href="/toFileFormat">以文件为原料生成</a>
-                </li>
             </ul>
         </li>
     </ul>

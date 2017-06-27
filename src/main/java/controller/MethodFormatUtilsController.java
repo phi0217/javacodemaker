@@ -92,7 +92,7 @@ public class MethodFormatUtilsController {
         String managerImpl = MethodFormat.toCommonManagerImpl(coreName,methodList);
         String service = MethodFormat.toCommonService(coreName,methodList);
         String serviceImpl;
-        if (nameList == null){
+        if (nameList == null || nameList == ""){
             serviceImpl = MethodFormat.toCommonServiceImpl(coreName,methodList);
         }else{
             Map<String,String> nameMap = new HashMap<>();

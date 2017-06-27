@@ -187,6 +187,28 @@ public class SqlFormat {
             }
             res.append(buf).append("\n");
         }
+        res.append("\n\n\n");
+        for (List<String> strings : listList) {
+            StringBuffer buf = new StringBuffer();
+            if (textMap.containsKey(strings.get(0))){
+                buf.append(" /**\n" +
+                        "     * ").append(textMap.get(strings.get(0))).append("\n" +
+                        "     */\n");
+            }
+            buf.append("\t").append("private ").append(mapperJavaBean(strings.get(1))).append(" ").append(strings.get(2)).append(";");
+            res.append(buf).append("\n");
+        }
+        res.append("\n\n\n");
+        for (List<String> strings : listList) {
+            StringBuffer buf = new StringBuffer();
+            if (textMap.containsKey(strings.get(0))){
+                buf.append(" /**\n" +
+                        "     * ").append(textMap.get(strings.get(0))).append("\n" +
+                        "     */\n").append("\t@ParamElement(required=true)").append("\n");
+            }
+            buf.append("\t").append("private ").append(mapperJavaBean(strings.get(1))).append(" ").append(strings.get(2)).append(";");
+            res.append(buf).append("\n");
+        }
         return res.toString();
     }
 
@@ -224,8 +246,7 @@ public class SqlFormat {
                 "\tSELECT\n" +
                 "\t<include refid=\"baseSql\" />\n" +
                 "\tfrom ?\n" +
-                "\twhere\n" +
-                "\t<trim prefixOverrides=\"AND\">\n");
+                "\t<where>\n");
         StringBuffer insertBefore = new StringBuffer();
         insertBefore.append("<insert id=\"\" >\n" +
                 "\tINSERT\n" +
@@ -271,7 +292,7 @@ public class SqlFormat {
             }else {
                 baseSql.append("\t").append(listList.get(i).get(0)).append("\n</sql>");
                 selectCommon.append("\t<if test=\"").append(listList.get(i).get(2)).append(" != null\">").append("AND ")
-                        .append(listList.get(i).get(0)).append("=#{").append(listList.get(i).get(2)).append("}</if>\n</trim>\n</select>");
+                        .append(listList.get(i).get(0)).append("=#{").append(listList.get(i).get(2)).append("}</if>\n</where>\n</select>");
                 insertBefore.append("\t").append(listList.get(i).get(0)).append(")\n");
                 insertAfter.append("\t#{").append(listList.get(i).get(2)).append("})\n" +
                         "</insert>");
