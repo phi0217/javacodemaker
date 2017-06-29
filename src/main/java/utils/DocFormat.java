@@ -37,7 +37,9 @@ public class DocFormat {
             throw new UtilsException(e.toString());
         }
         while (interfaceStr.contains("/**")) {
-            interfaceStr = interfaceStr.split("/[*][*]")[0]+interfaceStr.split("[*]/")[1];
+            String rmStr = "/**" + interfaceStr.split("/[*][*]")[1].split("[*]/")[0] + "*/";
+            rmStr = rmStr.replaceAll("[*]","[*]");
+            interfaceStr = interfaceStr.replaceAll(rmStr,"");
         }
             String[] interfaceList = interfaceStr.split("@FunctionInfo");
         String interfaceTmp = "";
@@ -176,6 +178,49 @@ public class DocFormat {
         return validateBuffer.append("\n").append(constantBuffer).toString();
     }
 
+    public static String controllerMaker(List<ExcelDto> req){
+        StringBuffer res = new StringBuffer();
+        for (ExcelDto excelDto : req) {
+            int tmp = 0;
+            res.append("@RequestMapping(value = \"/").append(excelDto.getFunctionName().toLowerCase()).append("\")\n" +
+                    "    public String ").append(excelDto.getFunctionName()).append("(");
+            for (ParamDto paramDto : excelDto.getReqList()) {
+                if ("Date".equals(paramDto.getType())){
+                    tmp = 1;
+                    res.append("@RequestParam(value = \"").append(paramDto.getName()).append("\", required = false) ").append("String").append(" ").append(paramDto.getName()).append(",\n");
+                }else {
+                    res.append("@RequestParam(value = \"").append(paramDto.getName()).append("\", required = false) ").append(paramDto.getType()).append(" ").append(paramDto.getName()).append(",\n");
+                }
+            }
+            if (tmp == 1){
+                res.append("ModelMap modelMap) {\n" +
+                        "        ").append("SimpleDateFormat sdf = new SimpleDateFormat(\"yyyy-MM-dd HH:mm\");\n" +
+                        "        ").append(excelDto.getReqName()).append(" req = new ").append(excelDto.getReqName()).append("();\n" +
+                        "        ");
+            }
+            res.append("ModelMap modelMap) {\n" +
+                    "        ").append(excelDto.getReqName()).append(" req = new ").append(excelDto.getReqName()).append("();\n" +
+                    "        ");
+            for (ParamDto paramDto : excelDto.getReqList()) {
+                if ("Date".equals(paramDto.getType())){
+                    res.append("try {\n" +
+                            "                req.set").append(capitalize(paramDto.getName())).append("(").append("sdf.parse(").append(paramDto.getName()).append("));\n" +
+                            "            } catch (ParseException e) {\n" +
+                            "            }");
+                }else {
+                    res.append("req.set").append(capitalize(paramDto.getName())).append("(").append(paramDto.getName()).append(");\n" +
+                            "        ");
+                }
+            }
+            res.append(excelDto.getResName()).append(" res = ").append("?Service.").append(excelDto.getFunctionName()).append("(req);\n" +
+                    "        getResultMessageByResultCode(res);\n" +
+                    "        return null;\n" +
+                    "    }\n\n");
+
+        }
+        return res.toString();
+    }
+
     public static String nameListMaker(List<ExcelDto> excelDtos){
         StringBuffer res = new StringBuffer();
         for (ExcelDto excelDto : excelDtos) {
@@ -198,7 +243,7 @@ public class DocFormat {
         String path = "d:\\workbook.xls";
         String validateNotNull = validateNotNullUtil(res);
         String nameList = nameListMaker(res);
-
+        String controllerList = controllerMaker(res);
         System.out.println();
 
         makeExcel(res, path);
