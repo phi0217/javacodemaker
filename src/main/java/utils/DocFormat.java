@@ -207,6 +207,13 @@ public class DocFormat {
                             "                req.set").append(capitalize(paramDto.getName())).append("(").append("sdf.parse(").append(paramDto.getName()).append("));\n" +
                             "            } catch (ParseException e) {\n" +
                             "            }");
+                }if ("BigDecimal".equals(paramDto.getType())){
+                    res.append("if (").append(paramDto.getName()).append(" == null){\n" +
+                            "            req.set").append(capitalize(paramDto.getName())).append("(new BigDecimal(0));\n" +
+                            "        }else {\n" +
+                            "            req.set").append(capitalize(paramDto.getName())).append("(").append(paramDto.getName()).append(");\n" +
+                            "        }\n" +
+                            "        ");
                 }else {
                     res.append("req.set").append(capitalize(paramDto.getName())).append("(").append(paramDto.getName()).append(");\n" +
                             "        ");

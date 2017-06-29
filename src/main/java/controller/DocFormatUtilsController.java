@@ -31,7 +31,7 @@ public class DocFormatUtilsController {
         String nameList = nameListMaker(excelDtos);
         String controllerList = controllerMaker(excelDtos);
 
-        String res = "【方法名语句,以method为原料生成使用】\n\n" + nameList + "\n" + "【Manager入参非空判断语句】\n" + validateNotNull + "\n\n\n" + controllerList;
+        String res = "【方法名语句,以method为原料生成使用】\n\n" + nameList + "\n\n\n【接口controller语句】" + controllerList + "\n" + "【Manager入参非空判断语句】\n" + validateNotNull;
 
         modelMap.addAttribute("interfacePath",interfacePath);
         modelMap.addAttribute("res",res);
