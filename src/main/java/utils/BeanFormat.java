@@ -78,17 +78,45 @@ public class BeanFormat {
             src = toList(srcText);
         }
         String res = "";
-        for (List<String> l : src) {
-            String string = format.replaceAll("#type#", l.get(0))
-                    .replaceAll("#name#", l.get(1)).replaceAll("#uppercase#", l.get(2)).replaceAll("#enter#", "\n");
-            if (l.size() >= 4) {
-                string = string.replaceAll("#text#", l.get(3));
-            } else {
-                string = string.replaceAll("#text#", "");
+        if (format.contains("#if#")) {
+            String condition = format.trim().replace("#if#", "").split("#do#")[0];
+            String format1 = format.split("#do#")[1].split("#else#")[0];
+            String format2 = format.split("#else#")[1];
+            for (List<String> l : src) {
+                String string;
+                if (l.get(0).equals(condition)) {
+                    string = formatMaker(format1, l);
+                }else {
+                    string = formatMaker(format2, l);
+                }
+                res = res + string + "\n";
             }
-            res = res + string + "\n";
+        } else {
+            for (List<String> l : src) {
+//                String string = format.replaceAll("#type#", l.get(0))
+//                        .replaceAll("#name#", l.get(1)).replaceAll("#uppercase#", l.get(2)).replaceAll("#enter#", "\n");
+//                if (l.size() >= 4) {
+//                    string = string.replaceAll("#text#", l.get(3));
+//                } else {
+//                    string = string.replaceAll("#text#", "");
+//                }
+                String string = formatMaker(format, l);
+                res = res + string + "\n";
+            }
         }
+
         return res;
+    }
+
+    public static String formatMaker(String format, List<String> l) {
+        String string = format.replaceAll("#type#", l.get(0))
+                .replaceAll("#name#", l.get(1)).replaceAll("#uppercase#", l.get(2)).replaceAll("#enter#", "\n");
+        if (l.size() >= 4) {
+            string = string.replaceAll("#text#", l.get(3));
+        } else {
+            string = string.replaceAll("#text#", "");
+        }
+        return string;
     }
 
     public static void main(String[] args) {
